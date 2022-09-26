@@ -12,8 +12,7 @@ RAM_POS_LIST EQU 0x20000200
 RAM_POS_SORT EQU 0x20000300
 
 ARRAY_SIZE EQU 20
-	
-RAM_POS_PRIMES_SIZE EQU 0x3FFFFFFF
+
 ; -------------------------------------------------------------------------------
 ; Área de Dados - Declarações de variáveis
 		AREA  DATA, ALIGN=2
@@ -30,7 +29,7 @@ Start
 ; Comece o código aqui <======================================================
 	LDR R0,=input_vector ; Array de numeros
 	LDR R1,=RAM_POS_LIST ; Posicao atual da ram
-	MOV R2,#0
+	MOV R2,#0 ; i
 	
 LOOP
 	CMP R2,#ARRAY_SIZE
@@ -47,8 +46,8 @@ LOAD_ARRAY_INPUT
 PRIMES
 	LDR R1,=RAM_POS_LIST ; Posicao atual da ram
 	LDR R2,=RAM_POS_SORT ; Posicao atual da ram pros primos
-	MOV R3,#0
-	MOV R10,#0
+	MOV R3,#0 ; i
+	MOV R10,#0 ; contador primo
 	
 	BL LOOP_PRIMES
 	BL LOOP_I_BUBBLE_SORT
@@ -57,8 +56,8 @@ PRIMES
 LOOP_PRIMES
     LDRB R0,[R1],#1 ; Pega os numeros do vetor salvos na ram
 	MOV R9,#2
-    UDIV R7,R0,R9
-    MOV R4,#1 ; R4 comeca em 1
+    UDIV R7,R0,R9 ; R7=R0/2
+    MOV R4,#1 ; R4 comeca em 1 -> j
     CMP R3,#ARRAY_SIZE
     PUSH {LR}
     BLNE FIND_PRIMES
@@ -70,12 +69,12 @@ LOOP_PRIMES
 
 FIND_PRIMES
     ADD R4, #1 ; R4 vai pra 2
-    CMP R4, R7 ; compara R4 com o numero da RAM pra ver se chegou na metade de R0
+    CMP R4, R7 ; compara R4 com a metade de R0
     BHI SALVAR
     UDIV R5, R0, R4 ; R5 = R0/R4
     MLS R6, R4, R5, R0 ; R6 = R4 -  R0 * R5
     CMP R6, #0 ; R6 deu 0?
-    BXEQ LR ; nao eh primo -> usar if then?
+    BXEQ LR ; nao eh primo
     B FIND_PRIMES
 SALVAR
     STRB R0,[R2],#1 ; Salva no endereco de R2 o que tem em R0
