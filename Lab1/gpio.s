@@ -89,6 +89,7 @@ GPIO_PORTP               	EQU    2_010000000000000
         EXPORT liga_LED
         EXPORT PortB_Output
 		EXPORT PortJ_Input          ; Permite chamar PortJ_Input de outro arquivo
+		EXPORT PortP_Output
 									
 
 ;--------------------------------------------------------------------------------
@@ -191,18 +192,18 @@ EsperaGPIO  LDR     R1, [R0]						;L? da mem?ria o conte?do do endere?o do regis
             STR     R1, [R0]							;Escreve no registrador da mem?ria funcionalidade digital
  
             LDR     R0, =GPIO_PORTJ_AHB_DEN_R			;Carrega o endere?o do DEN
-			MOV     R1, #2_00000001                     ;J0     
+			MOV     R1, #2_00000011                     ;J0     
             STR     R1, [R0]                            ;Escreve no registrador da mem?ria funcionalidade digital
 			
 ; 7. Para habilitar resistor de pull-up interno, setar PUR para 1
 			LDR     R0, =GPIO_PORTJ_AHB_PUR_R			;Carrega o endere?o do PUR para a porta J
-			MOV     R1, #2_1							;Habilitar funcionalidade digital de resistor de pull-up 
+			MOV     R1, #2_00000011							;Habilitar funcionalidade digital de resistor de pull-up 
             STR     R1, [R0]							;Escreve no registrador da mem?ria do resistor de pull-up
 			BX      LR
 
 ; -------------------------------------------------------------------------------
 ; Fun��o Display_show
-; Par�metro de entrada: R0 -> A, R1 -> Q
+; Par�metro de entrada: R0 -> AQ
 ; Par�metro de sa�da: N�o tem
 Display_show
     LDR	R2, =GPIO_PORTA_DATA_R
@@ -241,21 +242,43 @@ PortB_Output
 	BX LR
 ; -------------------------------------------------------------------------------
 ; Fun��o liga_LED
-; Par�metro de entrada: R0 -> A, R1 -> Q
+; Par�metro de entrada: R1 -> AQ
 ; Par�metro de sa�da: N�o tem
 liga_LED
-    LDR	R2, =GPIO_PORTA_DATA_R
-	STR R0, [R2]
+	LDR	R2, =GPIO_PORTA_DATA_R
+	
+	AND R4, R1, #0xF0
+	
+	LDR R3, [R2]
+	BIC R3, #0xF0
+	ORR R3, R4
+	STR R3, [R2]
 
     LDR	R2, =GPIO_PORTQ_DATA_R
-	STR R1, [R2]
 
-	LDR	R2, =GPIO_PORTP_DATA_R
-	MOV R0,#2_00100000
-	STR R0, [R2]
+	AND R4, R1, #0x0F
+	
+	LDR R3, [R2]
+	BIC R3, #0x0F
+	ORR R3, R4
+	STR R3, [R2]
 
 	BX LR
+; -------------------------------------------------------------------------------
+; Fun��o PortP_Output
+; Par�metro de entrada: R0
+; Par�metro de sa�da: N�o tem
+PortP_Output
+	LDR	R2, =GPIO_PORTP_DATA_R
 
+	AND R4, R0, #0x20
+	
+	LDR R3, [R2]
+	BIC R3, #0x20
+	ORR R3, R4
+	STR R3, [R2]
+
+	BX LR
 ; -------------------------------------------------------------------------------
 ; Fun��o PortJ_Input
 ; Par�metro de entrada: N�o tem
@@ -263,8 +286,8 @@ liga_LED
 PortJ_Input
 	LDR	R1, =GPIO_PORTJ_AHB_DATA_R		    ;Carrega o valor do offset do data register
 	LDR R0, [R1]                            ;L? no barramento de dados dos pinos [J0]
+	AND R0, #0x03
 	BX LR									;Retorno
-
 
 
     ALIGN                           ; garante que o fim da se??o est� alinhada 

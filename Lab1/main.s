@@ -12,6 +12,8 @@
 ; Declara��es EQU - Defines
 ;<NOME>         EQU <VALOR>
 ; ========================
+PASSO_CONTADOR EQU 0x20002004
+ORDEM_CONTADOR EQU 0x20002005
 
 ; -------------------------------------------------------------------------------
 ; �rea de Dados - Declara��es de vari�veis
@@ -28,6 +30,8 @@
 ;                  c�digo
         AREA    |.text|, CODE, READONLY, ALIGN=2
 digitos_vector DCB   0x3F, 0x06, 0x5B, 0x4F, 0x66, 0x6D, 0x7D, 0x07, 0x7F, 0x6F
+leds_vector DCB		0x81, 0x42, 0x24, 0x18, 0x18, 0x24, 0x42, 0x81
+
 		
 		; Se alguma fun��o do arquivo for chamada em outro arquivo	
         EXPORT Start                ; Permite chamar a fun��o Start a partir de 
@@ -44,7 +48,8 @@ digitos_vector DCB   0x3F, 0x06, 0x5B, 0x4F, 0x66, 0x6D, 0x7D, 0x07, 0x7F, 0x6F
         IMPORT  Display_show
 		IMPORT  liga_LED
 		IMPORT  PortB_Output
-        IMPORT  PortJ_Input	
+        IMPORT  PortJ_Input
+		IMPORT  PortP_Output
 
 
 ; -------------------------------------------------------------------------------
@@ -53,60 +58,98 @@ Start
 	BL PLL_Init                  ;Chama a subrotina para alterar o clock do microcontrolador para 80MHz
 	BL SysTick_Init
 	BL GPIO_Init                 ;Chama a subrotina que inicializa os GPIO
+	
+	LDR R10,=PASSO_CONTADOR
+	LDR R11,=ORDEM_CONTADOR
+	MOV R12,#0
+	STRB R12,[R11]
+	MOV R12,#1
+	STRB R12,[R10]
+	
 
 MainLoop
 	LDR R12,=digitos_vector
-	MOV R10,#0
-	MOV R11,#0
-	B LOOP
+	LDR R9,=leds_vector
+	MOV R10,#0 ; Dezenas
+	MOV R11,#0 ; Unidade
+	
+	; Colocar essa parte em função paralela ao loop ------
+	BL PortJ_Input
+	
+	CMP R0,#2
+	LDR R0,=PASSO_CONTADOR
+	LDRB R2,[R0]
+	; checar se já chegou em 9 para resetar para passo 1
+	ITT  EQ
+		ADDEQ R2,#1
+		STRBEQ R2,[R0]
+	; ----------
+	; TOGGLE de loop
+;	CMP R0,#1 ; 0x3 nenhuma apertada ; 1 -> SW2 apertada; 2 -> SW1 apertada
+	;BEQ LOOP_DECRESCENTE
+	B LOOP_CRESCENTE
 
-LOOP
+LIGAR_LEDS
+	PUSH {LR}
+	LDRB R1,[R9, R8]
+	BL liga_LED
+	
+	MOV R0,#2_00100000
+	BL PortP_Output
+
+	MOV R0, #10
+	BL SysTick_Wait1ms
+	
+	ADD R8,#1
+	CMP R8,#9
+	IT EQ
+		MOVEQ R8,#0
+	POP {LR}
+	BX LR
+
+LOOP_CRESCENTE
 	LDR R12,=digitos_vector
 	LDRB R0,[R12, R10]
 	BL Display_show
 	MOV R0,#0x10
 	BL PortB_Output
+	MOV R0, #7
 	BL SysTick_Wait1ms
 	
 	MOV R0,#0
 	BL PortB_Output
+	MOV R0, #7
 	BL SysTick_Wait1ms
 	
 	LDRB R0,[R12, R11]
 	BL Display_show
 	MOV R0,#0x20
 	BL PortB_Output
+	MOV R0, #7
 	BL SysTick_Wait1ms
 	
 	MOV R0,#0
 	BL PortB_Output
-	BL SysTick_Wait1s
 	
-	ADD R11,#1
+	BL LIGAR_LEDS
+	MOV R0, #200 ; -------------------------------------- TROCAR AQUI
+	BL SysTick_Wait1ms
+	
+	LDR R0,=PASSO_CONTADOR
+	LDRB R1,[R0]
+	ADD R11,R1
 	CMP R11,#10
-	BLT LOOP
+	BLT LOOP_CRESCENTE
 	
 	SUB R11,#10
 	ADD R10,#1
 	
 	CMP R10,#10
-	BLT LOOP
+	BLT LOOP_CRESCENTE
 	
 	SUB R10,#10
-	B LOOP
+	B MainLoop
 	
-;;LOOP_UNIT
-;	LDRB R0,[R12, ]
-;	BL Display_show
-;	MOV R0,#2_00100000
-;	BL PortB_Output
-;	ADD R3,#1 ;-> passo
-;	CMP R3,#9
-;	PUSH {R3}
-;	BL SysTick_Wait1s
-;	POP {R3}
-;;	BGE LOOP_UNIT
-;;	B LOOP
 
 ;Verifica_Nenhuma
 ;	CMP	R0, #2_00000011			 ;Verifica se nenhuma chave est� pressionada
@@ -130,7 +173,7 @@ LOOP
 ;	CMP R0, #2_00000000			 ;Verifica se ambas as chaves estao pressionadas
 ;	BNE MainLoop          		 ;Se o teste falhou, pula
 ;	MOV R0, #2_00010001			 ;Setar o par�metro de entrada da fun��o como o BIT0
-Liga_Display
+;Liga_Display
 	
 
 ;--------------------------------------------------------------------------------
