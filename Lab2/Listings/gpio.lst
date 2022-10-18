@@ -707,87 +707,83 @@ ARM Macro Assembler    Page 11
   405 000001C0         ; Parametro de entrada: Nao tem
   406 000001C0         ; Parametro de saida: R9
   407 000001C0         ; Modifica: R10
-  408 000001C0         Port_L_Input
-  409 000001C0         ; ******************************************************
-                       *************************
-  410 000001C0         ; le o conte�do dos bits de 3 a 0 do PortL em R9
-  411 000001C0         ; ******************************************************
-                       *************************
+  408 000001C0         ; le o conte�do dos bits de 3 a 0 do PortL em R9
+  409 000001C0         Port_L_Input
+  410 000001C0 F8DF A104       LDR              R10, =GPIO_PORTL_DATA_R
+  411 000001C4 F8DA 9000       LDR              R9, [R10]
+  412 000001C8 F009 090F       AND              R9, #0x0F
+  413 000001CC 4770            BX               LR
 
 
 
 ARM Macro Assembler    Page 12 
 
 
-  412 000001C0 F8DF A104       LDR              R10, =GPIO_PORTL_DATA_R
-  413 000001C4 F8DA 9000       LDR              R9, [R10]
-  414 000001C8 F009 090F       AND              R9, #0x0F
-  415 000001CC 4770            BX               LR
-  416 000001CE         ; Inicializacao da interrupcao
-  417 000001CE         Int_Init
-  418 000001CE 483F            LDR              R0, =GPIO_PORTJ_AHB_IM_R
-  419 000001D0 F04F 0100       MOV              R1, #0x00
-  420 000001D4 6001            STR              R1, [R0]
-  421 000001D6         
-  422 000001D6 483E            LDR              R0, =GPIO_PORTJ_AHB_IS_R
-  423 000001D8 F04F 0100       MOV              R1, #0x00
-  424 000001DC 6001            STR              R1, [R0]
-  425 000001DE         
-  426 000001DE 483D            LDR              R0, =GPIO_PORTJ_AHB_IBE_R
-  427 000001E0 F04F 0100       MOV              R1, #0x00
-  428 000001E4 6001            STR              R1, [R0]
-  429 000001E6         
-  430 000001E6 483C            LDR              R0, =GPIO_PORTJ_AHB_IEV_R
-  431 000001E8 F04F 0100       MOV              R1, #0x00
-  432 000001EC 6001            STR              R1, [R0]
-  433 000001EE         
-  434 000001EE 483B            LDR              R0, =GPIO_PORTJ_AHB_ICR_R
-  435 000001F0 F04F 0101       MOV              R1, #0x01
-  436 000001F4 6001            STR              R1, [R0]
-  437 000001F6         
-  438 000001F6 4835            LDR              R0, =GPIO_PORTJ_AHB_IM_R
-  439 000001F8 F04F 0101       MOV              R1, #0x01
-  440 000001FC 6001            STR              R1, [R0]
-  441 000001FE         
-  442 000001FE 4838            LDR              R0, =NVIC_EN1_R
-  443 00000200 F44F 2100       MOV              R1, #0x80000
-  444 00000204 6001            STR              R1, [R0]
-  445 00000206         
-  446 00000206 4837            LDR              R0, =NVIC_PRI12_R
-  447 00000208 F04F 0105       MOV              R1, #5
-  448 0000020C EA4F 7141       LSL              R1, #29
-  449 00000210 6001            STR              R1, [R0]
-  450 00000212         
-  451 00000212 4770            BX               LR
-  452 00000214         
-  453 00000214         GPIOPortJ_Handler
-  454 00000214 4834            LDR              R0, =FLAG_INTERRUPCAO
-  455 00000216 F04F 0101       MOV              R1, #1
-  456 0000021A 6001            STR              R1, [R0]
-  457 0000021C         
-  458 0000021C 482F            LDR              R0, =GPIO_PORTJ_AHB_ICR_R
-  459 0000021E F04F 0101       MOV              R1, #0x01
-  460 00000222 6001            STR              R1, [R0]
-  461 00000224 4770            BX               LR
-  462 00000226         
-  463 00000226 00 00           ALIGN                        ; garante que o fim
+  414 000001CE         ; Inicializacao da interrupcao
+  415 000001CE         Int_Init
+  416 000001CE 483F            LDR              R0, =GPIO_PORTJ_AHB_IM_R
+  417 000001D0 F04F 0100       MOV              R1, #0x00
+  418 000001D4 6001            STR              R1, [R0]
+  419 000001D6         
+  420 000001D6 483E            LDR              R0, =GPIO_PORTJ_AHB_IS_R
+  421 000001D8 F04F 0100       MOV              R1, #0x00
+  422 000001DC 6001            STR              R1, [R0]
+  423 000001DE         
+  424 000001DE 483D            LDR              R0, =GPIO_PORTJ_AHB_IBE_R
+  425 000001E0 F04F 0100       MOV              R1, #0x00
+  426 000001E4 6001            STR              R1, [R0]
+  427 000001E6         
+  428 000001E6 483C            LDR              R0, =GPIO_PORTJ_AHB_IEV_R
+  429 000001E8 F04F 0100       MOV              R1, #0x00
+  430 000001EC 6001            STR              R1, [R0]
+  431 000001EE         
+  432 000001EE 483B            LDR              R0, =GPIO_PORTJ_AHB_ICR_R
+  433 000001F0 F04F 0101       MOV              R1, #0x01
+  434 000001F4 6001            STR              R1, [R0]
+  435 000001F6         
+  436 000001F6 4835            LDR              R0, =GPIO_PORTJ_AHB_IM_R
+  437 000001F8 F04F 0101       MOV              R1, #0x01
+  438 000001FC 6001            STR              R1, [R0]
+  439 000001FE         
+  440 000001FE 4838            LDR              R0, =NVIC_EN1_R
+  441 00000200 F44F 2100       MOV              R1, #0x80000
+  442 00000204 6001            STR              R1, [R0]
+  443 00000206         
+  444 00000206 4837            LDR              R0, =NVIC_PRI12_R
+  445 00000208 F04F 0105       MOV              R1, #5
+  446 0000020C EA4F 7141       LSL              R1, #29
+  447 00000210 6001            STR              R1, [R0]
+  448 00000212         
+  449 00000212 4770            BX               LR
+  450 00000214         
+  451 00000214         GPIOPortJ_Handler
+  452 00000214 4834            LDR              R0, =FLAG_INTERRUPCAO
+  453 00000216 F04F 0101       MOV              R1, #1
+  454 0000021A 6001            STR              R1, [R0]
+  455 0000021C         
+  456 0000021C 482F            LDR              R0, =GPIO_PORTJ_AHB_ICR_R
+  457 0000021E F04F 0101       MOV              R1, #0x01
+  458 00000222 6001            STR              R1, [R0]
+  459 00000224 4770            BX               LR
+  460 00000226         
+  461 00000226 00 00           ALIGN                        ; garante que o fim
                                                              da secao esta alin
                                                             hada 
-  464 00000228                 END                          ; fim do arquivo
+  462 00000228                 END                          ; fim do arquivo
               400FE608 
               400FEA08 
               40058528 
               40061528 
+              40062528 
+              40063528 
+              40065528 
+              40066528 
 
 
 
 ARM Macro Assembler    Page 13 
 
 
-              40062528 
-              40063528 
-              40065528 
-              40066528 
               4005852C 
               4006152C 
               4006252C 
@@ -829,11 +825,12 @@ ARM Macro Assembler    Page 13
               E000E104 
               E000E430 
               20002048 
-Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M4.fp.sp --apcs=
-interwork --depend=.\objects\gpio.d -o.\objects\gpio.o -IC:\Users\thiag\AppData
-\Local\Arm\Packs\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C129 --predefine="__EVAL
- SETA 1" --predefine="__UVISION_VERSION SETA 536" --predefine="TM4C1294NCPDT SE
-TA 1" --list=.\listings\gpio.lst gpio.s
+Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M4.fp --apcs=int
+erwork --depend=.\objects\gpio.d -o.\objects\gpio.o -IC:\Users\DAELN\Downloads\
+UTFPR-Sitemas-Microcontrolados-main\Lab2\RTE -IC:\Keil_v5\ARM\PACK\Keil\TM4C_DF
+P\1.1.0\Device\Include\TM4C129 -IC:\Keil_v5\ARM\CMSIS\Include --predefine="__EV
+AL SETA 1" --predefine="__UVISION_VERSION SETA 518" --predefine="TM4C1294NCPDT 
+SETA 1" --list=.\listings\gpio.lst gpio.s
 
 
 
@@ -876,7 +873,7 @@ GPIOPortJ_Handler 00000214
 
 Symbol: GPIOPortJ_Handler
    Definitions
-      At line 453 in file gpio.s
+      At line 451 in file gpio.s
    Uses
       At line 126 in file gpio.s
 Comment: GPIOPortJ_Handler used once
@@ -892,7 +889,7 @@ Int_Init 000001CE
 
 Symbol: Int_Init
    Definitions
-      At line 417 in file gpio.s
+      At line 415 in file gpio.s
    Uses
       At line 125 in file gpio.s
 Comment: Int_Init used once
@@ -946,7 +943,7 @@ Port_L_Input 000001C0
 
 Symbol: Port_L_Input
    Definitions
-      At line 408 in file gpio.s
+      At line 409 in file gpio.s
    Uses
       At line 124 in file gpio.s
 Comment: Port_L_Input used once
@@ -963,7 +960,7 @@ Symbol: FLAG_INTERRUPCAO
    Definitions
       At line 13 in file gpio.s
    Uses
-      At line 454 in file gpio.s
+      At line 452 in file gpio.s
 Comment: FLAG_INTERRUPCAO used once
 GPIO_PORTA 00000001
 
@@ -1119,7 +1116,7 @@ Symbol: GPIO_PORTJ_AHB_IBE_R
    Definitions
       At line 15 in file gpio.s
    Uses
-      At line 426 in file gpio.s
+      At line 424 in file gpio.s
 Comment: GPIO_PORTJ_AHB_IBE_R used once
 GPIO_PORTJ_AHB_ICR_R 4006041C
 
@@ -1127,8 +1124,8 @@ Symbol: GPIO_PORTJ_AHB_ICR_R
    Definitions
       At line 19 in file gpio.s
    Uses
-      At line 434 in file gpio.s
-      At line 458 in file gpio.s
+      At line 432 in file gpio.s
+      At line 456 in file gpio.s
 
 GPIO_PORTJ_AHB_IEV_R 4006040C
 
@@ -1136,7 +1133,7 @@ Symbol: GPIO_PORTJ_AHB_IEV_R
    Definitions
       At line 16 in file gpio.s
    Uses
-      At line 430 in file gpio.s
+      At line 428 in file gpio.s
 Comment: GPIO_PORTJ_AHB_IEV_R used once
 GPIO_PORTJ_AHB_IM_R 40060410
 
@@ -1144,8 +1141,8 @@ Symbol: GPIO_PORTJ_AHB_IM_R
    Definitions
       At line 17 in file gpio.s
    Uses
-      At line 418 in file gpio.s
-      At line 438 in file gpio.s
+      At line 416 in file gpio.s
+      At line 436 in file gpio.s
 
 
 
@@ -1159,7 +1156,7 @@ Symbol: GPIO_PORTJ_AHB_IS_R
    Definitions
       At line 14 in file gpio.s
    Uses
-      At line 422 in file gpio.s
+      At line 420 in file gpio.s
 Comment: GPIO_PORTJ_AHB_IS_R used once
 GPIO_PORTJ_AHB_LOCK_R 40060520
 
@@ -1323,7 +1320,7 @@ Symbol: GPIO_PORTL_DATA_R
    Definitions
       At line 72 in file gpio.s
    Uses
-      At line 412 in file gpio.s
+      At line 410 in file gpio.s
 Comment: GPIO_PORTL_DATA_R used once
 GPIO_PORTL_DEN_R 4006251C
 
@@ -1644,7 +1641,7 @@ Symbol: NVIC_EN1_R
    Definitions
       At line 20 in file gpio.s
    Uses
-      At line 442 in file gpio.s
+      At line 440 in file gpio.s
 Comment: NVIC_EN1_R used once
 NVIC_PRI12_R E000E430
 
@@ -1652,7 +1649,7 @@ Symbol: NVIC_PRI12_R
    Definitions
       At line 21 in file gpio.s
    Uses
-      At line 446 in file gpio.s
+      At line 444 in file gpio.s
 Comment: NVIC_PRI12_R used once
 SYSCTL_PRGPIO_R 400FEA08
 

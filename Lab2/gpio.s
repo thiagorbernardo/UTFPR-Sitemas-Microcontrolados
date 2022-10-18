@@ -405,10 +405,8 @@ Desativa_Colunas
 ; Parametro de entrada: Nao tem
 ; Parametro de saida: R9
 ; Modifica: R10
-Port_L_Input
-; *******************************************************************************
 ; le o conte�do dos bits de 3 a 0 do PortL em R9
-; *******************************************************************************
+Port_L_Input
 	LDR   R10, =GPIO_PORTL_DATA_R
 	LDR   R9, [R10]
 	AND   R9, #0x0F
