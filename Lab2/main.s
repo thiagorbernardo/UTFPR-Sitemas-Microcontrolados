@@ -24,16 +24,6 @@ flag_zera_tudo			SPACE   4
 ; �rea de C�digo - Tudo abaixo da diretiva a seguir ser� armazenado na mem�ria de c�digo
 			AREA	|.text|, CODE, READONLY, ALIGN=2
 				
-; vetor na mem�ria FLASH:
-senha_mestra DCB   9, 9, 9, 9
-; texto "Tabuada do ":
-texto_tabuada			DCB   'T', 'a', 'b', 'u', 'a', 'd', 'a', ' ', 'd', 'o', ' ', 0
-
-; texto "Aperte uma tecla":
-bem_vindo_1				DCB   'A', 'p', 'e', 'r', 't', 'e', ' ', 'u', 'm', 'a', ' ', 't', 'e', 'c', 'l', 'a', 0
-
-; texto "  para come�ar  ":
-bem_vindo_2				DCB   ' ', ' ', 'p', 'a', 'r', 'a', ' ', 'c', 'o', 'm', 'e', 0x07, 'a', 'r', ' ', ' ', 0
 
 			EXPORT Start			; Permite chamar a Funcao Start a partir de 
 									; outro arquivo. No caso startup.s
@@ -61,7 +51,7 @@ bem_vindo_2				DCB   ' ', ' ', 'p', 'a', 'r', 'a', ' ', 'c', 'o', 'm', 'e', 0x07
 ; Parametro de saida: N�o tem
 ; Modifica: R0, R10, R11 e R12 (R10, 11 e 12 nas funcoes chamadas por EnviaLCD)
 EnviaLCD
-	PUSH { LR }
+	PUSH { LR, R0 }
 	; R8 j� possui o valor a ser enviado
 	BL PortK_Output
 	
@@ -80,33 +70,33 @@ EnviaLCD
 	BL SysTick_Wait1ms
 	; zera enable e espera por 2ms
 	
-	POP { LR }
+	POP { LR, R0 }
 	BX LR
-	
+
 LCD_Init
 	PUSH { LR }
 	MOV R8, #0x38
 	MOV R9, #0
 	BL EnviaLCD
-	
+
 	MOV R8, #0x06
 	MOV R9, #0
 	BL EnviaLCD
-	
+
 	MOV R8, #0x0E
 	MOV R9, #0
 	BL EnviaLCD
-	
+
 	MOV R8, #0x01
 	MOV R9, #0
 	BL EnviaLCD
-	
+
 	;;;;;;;;;;;;;
-	
+
 	MOV R8, #0x78
 	MOV R9, #0
 	BL EnviaLCD
-	
+
 	MOV R8, #0x00
 	MOV R9, #1
 	BL EnviaLCD
@@ -131,11 +121,11 @@ LCD_Init
 	MOV R8, #0x0C
 	MOV R9, #1
 	BL EnviaLCD
-	
+
 	MOV R8, #0x80
 	MOV R9, #0
 	BL EnviaLCD
-	
+
 	POP { LR }
 	BX LR
 
@@ -148,11 +138,15 @@ Start
 	BL LCD_Init
 	BL Int_Init
 main_loop
-	; o c�digo vai aqui
+
+	BL escreve_frase_inicial
 	LDR R10,=FLAG_INTERRUPCAO
 	MOV R11, #0
 	STRB R11,[R10]
 	BL setar_senha
+	LDR R6, =cofre_fechado
+	BL escreve_frases
+	
 	BL decifrar_senha
 
 	B main_loop
@@ -163,13 +157,12 @@ setar_senha
 	MOV R1, #0
 loop_setar_senha	
 	BL ler_teclado
+	MOV R0, #200
+	BL SysTick_Wait1ms 
 	CMP R6, #1
 	BLEQ salvar_senha_digitada
 	CMP R6, #0
 	BEQ loop_setar_senha
-;			BL LCD
-	MOV R4, #2
-	BL SysTick_Wait1us ;TODO arrumar o BOUNCE 
 	ADD R1, #1
 	CMP R1, #4
 	BLT loop_setar_senha
@@ -180,6 +173,12 @@ loop_espera_hashtag
 	CMP R5,#0x0c ; caso seja #
 	BNE loop_espera_hashtag
 	BL salvar_senha_final
+	MOV R0, #1000
+	BL SysTick_Wait1ms
+	LDR R6, =cofre_fechando
+	BL escreve_frases
+	MOV R0, #5000
+	BL SysTick_Wait1ms
 	POP { LR }
 	BX LR
 
@@ -227,13 +226,12 @@ decifrar_senha
 	MOV R12, #0
 loop_decifrar_senha
 	BL ler_teclado
+	MOV R0, #200
+	BL SysTick_Wait1ms 
 	CMP R6, #1
 	BLEQ salvar_senha_digitada
 	CMP R6, #0
-	BEQ loop_decifrar_senha
-;			BL LCD
-	MOV R4, #2
-	BL SysTick_Wait1us ;TODO arrumar o BOUNCE 
+	BEQ loop_decifrar_senha 
 	ADD R1, #1
 	CMP R1, #4
 	BLT loop_decifrar_senha
@@ -244,11 +242,19 @@ loop_decifrar_senha
 	ADD R2, #1
 	CMP R2, #4
 	BLT loop_decifrar_senha
+	
+	LDR R6, =cofre_travado
+	BL escreve_frases
 	B travar ; trava caso passe o limite
 
 ; se a senha certa for digitada volta para main pois o cofre esta aberto 
 senha_certa
-	;BL LCD 
+	MOV R0, #1000
+	BL SysTick_Wait1ms
+	LDR R6, =cofre_abrindo
+	BL escreve_frases
+	MOV R0, #5000
+	BL SysTick_Wait1ms
 	POP { LR }
 	BX LR
 
@@ -262,13 +268,12 @@ travar
 	BNE travar
 	MOV R12, #0
 	BL ler_teclado
+	MOV R0, #200
+	BL SysTick_Wait1ms
 	CMP R6, #1
 	BLEQ salvar_senha_digitada
 	CMP R6, #0
 	BEQ travar
-;			BL LCD
-	MOV R4, #2
-	BL SysTick_Wait1us ;TODO arrumar o BOUNCE 
 	ADD R1, #1
 	CMP R1, #4
 	BLT travar
@@ -363,12 +368,12 @@ loop_pisca_LED
 	MOV R9, #0x20
 	BL PortP_Output
 
-	MOV R0,#500
+	MOV R0,#50
 	BL SysTick_Wait1ms
 	MOV R9, #0x00
 	BL PortP_Output
 
-	MOV R0,#500
+	MOV R0,#50
 	BL SysTick_Wait1ms
 	ADD R1, #1
 	CMP R1, #5
@@ -378,6 +383,79 @@ loop_pisca_LED
 	MOV R3, #0
 	MOV R6, #0
 	BX LR
+	
+escreve_frase_inicial
+	PUSH { LR }
 
+	MOV R8, #0x01
+	MOV R9, #0
+	BL EnviaLCD
+
+	; move cursor para a primeira linha (instrução 0x80)
+	MOV R8, #0x80
+	MOV R9, #0
+	BL EnviaLCD
+
+	LDR R6, =start_linha_1
+	BL escreve_nome
+
+	; move cursor para a segunda linha (instrução 0xC0)
+	MOV R8, #0xC0
+	MOV R9, #0
+	BL EnviaLCD
+
+	LDR R6, =start_linha_2
+	BL escreve_nome
+	
+	POP { LR }
+	BX LR
+	
+escreve_nome
+	PUSH { LR, R6, R5 }
+proximo_caracter
+	LDRB R5, [R6], #1
+	CMP R5, #0
+	BEQ final_escreve_nome
+	
+	MOV R8, R5
+	MOV R9, #1
+	BL EnviaLCD
+	B proximo_caracter
+
+final_escreve_nome
+	POP { LR, R6, R5 }
+	BX LR
+
+escreve_frases
+	PUSH { LR }
+
+	MOV R8, #0x01
+	MOV R9, #0
+	BL EnviaLCD
+
+	; move cursor para a primeira linha (instrução 0x80)
+	MOV R8, #0x80
+	MOV R9, #0
+	BL EnviaLCD
+
+	BL escreve_nome
+	
+	POP { LR }
+	BX LR
+			
+; vetor na mem�ria FLASH:
+senha_mestra DCB   9, 9, 9, 9
+
+start_linha_1				DCB   'C', 'o', 'f', 'r', 'e', ' ', 'a', 'b', 'e', 'r', 't', 'o', ',', 0
+
+start_linha_2				DCB   'd', 'i', 'g', 'i', 't', 'e', ' ', 'n', 'o', 'v', 'a', ' ', 's', 'e', 'n', 'h', 0
+
+cofre_fechado				DCB   'C', 'o', 'f', 'r', 'e', ' ', 'f', 'e', 'c', 'h', 'a', 'd', 'o', 0
+
+cofre_fechando				DCB   'C', 'o', 'f', 'r', 'e', ' ', 'f', 'e', 'c', 'h', 'a', 'n', 'd', 'o', 0
+
+cofre_abrindo				DCB   'C', 'o', 'f', 'r', 'e', ' ', 'a', 'b', 'r', 'i', 'n', 'd', 'o', 0
+
+cofre_travado				DCB   'C', 'o', 'f', 'r', 'e', ' ', 't', 'r', 'a', 'v', 'a', 'd', 'o', 0
 	ALIGN                        ; Garante que o fim da se��o est� alinhada 
 	END                          ; Fim do arquivo

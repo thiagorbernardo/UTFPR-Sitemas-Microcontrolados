@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\Objects\lab02.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Objects\lab02.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060960: Last Updated: Tue Oct 18 00:16:08 2022
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060061: Last Updated: Tue Oct 18 11:47:39 2022
 <BR><P>
 <H3>Maximum Stack Usage =          0 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -14,21 +14,21 @@ Functions with no stack information
 </H3><UL>
  <LI><a href="#[6b]">Reset_Handler</a>
  <LI><a href="#[6f]">InicializaGPIO</a>
- <LI><a href="#[76]">PortA_Output</a>
- <LI><a href="#[77]">PortQ_Output</a>
- <LI><a href="#[78]">PortP_Output</a>
- <LI><a href="#[79]">PortK_Output</a>
- <LI><a href="#[7a]">PortM_Output_LCD_Controle</a>
+ <LI><a href="#[75]">PortA_Output</a>
+ <LI><a href="#[76]">PortQ_Output</a>
+ <LI><a href="#[77]">PortP_Output</a>
+ <LI><a href="#[78]">PortK_Output</a>
+ <LI><a href="#[79]">PortM_Output_LCD_Controle</a>
  <LI><a href="#[72]">Ativa_Coluna</a>
- <LI><a href="#[75]">Desativa_Colunas</a>
- <LI><a href="#[74]">Port_L_Input</a>
+ <LI><a href="#[74]">Desativa_Colunas</a>
+ <LI><a href="#[73]">Port_L_Input</a>
  <LI><a href="#[70]">Int_Init</a>
  <LI><a href="#[3d]">GPIOPortJ_Handler</a>
  <LI><a href="#[6c]">Start</a>
  <LI><a href="#[6d]">PLL_Init</a>
  <LI><a href="#[6e]">SysTick_Init</a>
- <LI><a href="#[73]">SysTick_Wait1ms</a>
- <LI><a href="#[71]">SysTick_Wait1us</a>
+ <LI><a href="#[71]">SysTick_Wait1ms</a>
+ <LI><a href="#[7a]">SysTick_Wait1us</a>
 </UL>
 </UL>
 <P>
@@ -524,31 +524,31 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[6c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Start
 </UL>
 
-<P><STRONG><a name="[76]"></a>PortA_Output</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, gpio.o(.text))
+<P><STRONG><a name="[75]"></a>PortA_Output</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, gpio.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[6c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Start
 </UL>
 
-<P><STRONG><a name="[77]"></a>PortQ_Output</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, gpio.o(.text))
+<P><STRONG><a name="[76]"></a>PortQ_Output</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, gpio.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[6c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Start
 </UL>
 
-<P><STRONG><a name="[78]"></a>PortP_Output</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, gpio.o(.text))
+<P><STRONG><a name="[77]"></a>PortP_Output</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, gpio.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[6c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Start
 </UL>
 
-<P><STRONG><a name="[79]"></a>PortK_Output</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, gpio.o(.text), UNUSED)
+<P><STRONG><a name="[78]"></a>PortK_Output</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, gpio.o(.text), UNUSED)
 
-<P><STRONG><a name="[7a]"></a>PortM_Output_LCD_Controle</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, gpio.o(.text), UNUSED)
+<P><STRONG><a name="[79]"></a>PortM_Output_LCD_Controle</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, gpio.o(.text), UNUSED)
 
 <P><STRONG><a name="[72]"></a>Ativa_Coluna</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, gpio.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[6c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Start
 </UL>
 
-<P><STRONG><a name="[75]"></a>Desativa_Colunas</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, gpio.o(.text))
+<P><STRONG><a name="[74]"></a>Desativa_Colunas</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, gpio.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[6c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Start
 </UL>
 
-<P><STRONG><a name="[74]"></a>Port_L_Input</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, gpio.o(.text))
+<P><STRONG><a name="[73]"></a>Port_L_Input</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, gpio.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[6c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Start
 </UL>
 
@@ -560,17 +560,16 @@ Global Symbols
 <BR>[Address Reference Count : 1]<UL><LI> startup.o(RESET)
 </UL>
 <P><STRONG><a name="[6c]"></a>Start</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, main.o(.text))
-<BR><BR>[Calls]<UL><LI><a href="#[71]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SysTick_Wait1us
-<LI><a href="#[73]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SysTick_Wait1ms
+<BR><BR>[Calls]<UL><LI><a href="#[71]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SysTick_Wait1ms
 <LI><a href="#[6e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SysTick_Init
 <LI><a href="#[6d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PLL_Init
 <LI><a href="#[70]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Int_Init
-<LI><a href="#[74]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Port_L_Input
-<LI><a href="#[75]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Desativa_Colunas
+<LI><a href="#[73]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Port_L_Input
+<LI><a href="#[74]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Desativa_Colunas
 <LI><a href="#[72]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Ativa_Coluna
-<LI><a href="#[78]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PortP_Output
-<LI><a href="#[77]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PortQ_Output
-<LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PortA_Output
+<LI><a href="#[77]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PortP_Output
+<LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PortQ_Output
+<LI><a href="#[75]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PortA_Output
 <LI><a href="#[6f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InicializaGPIO
 </UL>
 <BR>[Called By]<UL><LI><a href="#[6b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Reset_Handler
@@ -584,13 +583,11 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[6c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Start
 </UL>
 
-<P><STRONG><a name="[73]"></a>SysTick_Wait1ms</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, utils.o(.text))
+<P><STRONG><a name="[71]"></a>SysTick_Wait1ms</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, utils.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[6c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Start
 </UL>
 
-<P><STRONG><a name="[71]"></a>SysTick_Wait1us</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, utils.o(.text))
-<BR><BR>[Called By]<UL><LI><a href="#[6c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Start
-</UL>
+<P><STRONG><a name="[7a]"></a>SysTick_Wait1us</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, utils.o(.text), UNUSED)
 <P>
 <H3>
 Local Symbols
