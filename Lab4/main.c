@@ -110,7 +110,7 @@ int main(void)
 				velocity_options_pot();
 				break;
 			default:
-				write_string_UART("Estado invalido\n");
+				write_string_UART("Estado invalido\r\n");
 				awaiting_rotation();
 				break;
 		}
@@ -120,8 +120,8 @@ int main(void)
 
 // Mostra as opções para o usuário escolher o sentido de rotação
 void awaiting_rotation(void) {
-	write_string_UART("Motor parado\n");
-	write_string_UART("Indique o sentido da rotacao: horario (h) ou anti-horario (a)\n");
+	write_string_UART("MOTOR PARADO\r\n");
+	write_string_UART("Digite o sentido da rotacao: horario (h) ou anti-horario (a)\r\n");
 	if(motor_rotation != AWAITING_ROTATION)
 		current_state = AWAITING_CONTROL_STATE;
 }
@@ -129,12 +129,12 @@ void awaiting_rotation(void) {
 // Mostra o sentido de rotação e mostra as opções para o usuário escolher
 // controlar a velocidade pelo terminal ou pelo potenciômetro
 void awaiting_control(void) {
-	write_string_UART("Motor parado\n");
+	write_string_UART("MOTOR PARADO\r\n");
 	if(motor_rotation == CLOCKWISE)
-		write_string_UART("Sentido horario (h)\n");
+		write_string_UART("Sentido horario (h)\r\n");
 	else
-		write_string_UART("Sentido anti-horario (a)\n");
-	write_string_UART("Deseja controlar a velocidade pelo terminal (t) ou potenciometro (p)?\n");
+		write_string_UART("Sentido anti-horario (a)\r\n");
+	write_string_UART("Deseja controlar a velocidade pelo potenciometro (p) ou terminal (t)?\r\n");
 	verify_control();
 	if(control_type == TERMINAL) {
 		current_state = VELOCITY_TERMINAL_STATE;
@@ -151,33 +151,34 @@ void awaiting_control(void) {
 void velocity_options_terminal(void) {
 	verify_velocity_terminal();
 	if(motor_rotation == CLOCKWISE)
-		write_string_UART("Sentido horario (h)\n");
+		write_string_UART("Sentido horario (h)\r\n");
 	else
-		write_string_UART("Sentido anti-horario (a)\n");
+		write_string_UART("Sentido anti-horario (a)\r\n");
+
 	write_string_UART("Controle pelo terminal. Motor girando a ");
 	write_number_UART(velocity_percentage);
-	write_string_UART("% da velocidade maxima.\n");
-	write_string_UART("Escolha a velocidade da rotacao do motor: \n");
-	write_string_UART("0 - Parar motor (0%)\n");
-	write_string_UART("1 - 50% da velocidade\n");
-	write_string_UART("2 - 60% da velocidade\n");
-	write_string_UART("3 - 70% da velocidade\n");
-	write_string_UART("4 - 80% da velocidade\n");
-	write_string_UART("5 - 90% da velocidade\n");
-	write_string_UART("6 - 100% da velocidade\n");
+	write_string_UART("% da velocidade maxima.\r\n");
+	write_string_UART("Escolha a velocidade de rotacao do motor: \r\n");
+	write_string_UART("0: Parar motor (0%)\r\n");
+	write_string_UART("1: 50% da velocidade\r\n");
+	write_string_UART("2: 60% da velocidade\r\n");
+	write_string_UART("3: 70% da velocidade\r\n");
+	write_string_UART("4: 80% da velocidade\r\n");
+	write_string_UART("5: 90% da velocidade\r\n");
+	write_string_UART("6: 100% da velocidade\r\n");
 }
 
 // Mostra o sentido de rotação, calcula a velocidade de acordo com a leitura 
 // do potenciômetro e mostra a velocidade
 void velocity_options_pot(void) {
 	if(motor_rotation == CLOCKWISE)
-		write_string_UART("Sentido horario (h)\n");
+		write_string_UART("Sentido horario (h)\r\n");
 	else
-		write_string_UART("Sentido anti-horario (a)\n");
+		write_string_UART("Sentido anti-horario (a)\r\n");
 	update_velocity_pot();
 	write_string_UART("Controle pelo potenciometro. Motor girando a ");
 	write_number_UART(velocity_percentage);
-	write_string_UART("% da velocidade maxima.\n");
+	write_string_UART("% da velocidade maxima.\r\n");
 }
 
 // Verifica o caractere lido e altera o sentido do motor se necessário
