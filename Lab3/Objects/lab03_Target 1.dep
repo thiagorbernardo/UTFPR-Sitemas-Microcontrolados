@@ -1,0 +1,17 @@
+Dependencies for Project 'lab03', Target 'Target 1': (DO NOT MODIFY !)
+F (.\gpio.c)(0x636A5245)(--c99 -c --cpu Cortex-M4.fp -D__EVAL -g -O1 --apcs=interwork --split_sections-I C:\Users\DAELN\Downloads\ap3\RTE-I C:\Keil_v5\ARM\PACK\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C129-I C:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="518" -DTM4C1294NCPDT-o .\objects\gpio.o --omf_browse .\objects\gpio.crf --depend .\objects\gpio.d)
+I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x569E76DA)
+I (tm4c1294ncpdt.h)(0x628B35AC)
+F (.\main.c)(0x636A6201)(--c99 -c --cpu Cortex-M4.fp -D__EVAL -g -O1 --apcs=interwork --split_sections-I C:\Users\DAELN\Downloads\ap3\RTE-I C:\Keil_v5\ARM\PACK\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C129-I C:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="518" -DTM4C1294NCPDT-o .\objects\main.o --omf_browse .\objects\main.crf --depend .\objects\main.d)
+I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x569E76DA)
+I (tm4c1294ncpdt.h)(0x628B35AC)
+F (.\startup.s)(0x628B35C6)(--cpu Cortex-M4.fp --pd "__EVAL SETA 1" -g --apcs=interwork -I C:\Users\DAELN\Downloads\ap3\RTE-I C:\Keil_v5\ARM\PACK\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C129-I C:\Keil_v5\ARM\CMSIS\Include--pd "__UVISION_VERSION SETA 518" --pd "TM4C1294NCPDT SETA 1"--list .\listings\startup.lst --xref -o .\objects\startup.o --depend .\objects\startup.d)
+F (.\tm4c1294ncpdt.h)(0x628B35AC)()
+F (.\utils.s)(0x626F35C6)(--cpu Cortex-M4.fp --pd "__EVAL SETA 1" -g --apcs=interwork -I C:\Users\DAELN\Downloads\ap3\RTE-I C:\Keil_v5\ARM\PACK\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C129-I C:\Keil_v5\ARM\CMSIS\Include--pd "__UVISION_VERSION SETA 518" --pd "TM4C1294NCPDT SETA 1"--list .\listings\utils.lst --xref -o .\objects\utils.o --depend .\objects\utils.d)
+F (.\motor.c)(0x636A5ECC)(--c99 -c --cpu Cortex-M4.fp -D__EVAL -g -O1 --apcs=interwork --split_sections-I C:\Users\DAELN\Downloads\ap3\RTE-I C:\Keil_v5\ARM\PACK\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C129-I C:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="518" -DTM4C1294NCPDT-o .\objects\motor.o --omf_browse .\objects\motor.crf --depend .\objects\motor.d)
+F (.\display.c)(0x636A524B)(--c99 -c --cpu Cortex-M4.fp -D__EVAL -g -O1 --apcs=interwork --split_sections-I C:\Users\DAELN\Downloads\ap3\RTE-I C:\Keil_v5\ARM\PACK\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C129-I C:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="518" -DTM4C1294NCPDT-o .\objects\display.o --omf_browse .\objects\display.crf --depend .\objects\display.d)
+I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x569E76DA)
+I (tm4c1294ncpdt.h)(0x628B35AC)
+F (.\teclado.c)(0x636A585B)(--c99 -c --cpu Cortex-M4.fp -D__EVAL -g -O1 --apcs=interwork --split_sections-I C:\Users\DAELN\Downloads\ap3\RTE-I C:\Keil_v5\ARM\PACK\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C129-I C:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="518" -DTM4C1294NCPDT-o .\objects\teclado.o --omf_browse .\objects\teclado.crf --depend .\objects\teclado.d)
+I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x569E76DA)
+I (tm4c1294ncpdt.h)(0x628B35AC)
